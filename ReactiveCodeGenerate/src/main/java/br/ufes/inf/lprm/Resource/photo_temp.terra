@@ -1,0 +1,15 @@
+var ushort tValue,pValue;
+loop do
+	par/and do
+		emit REQ_PHOTO();
+		pValue = await PHOTO;
+	with
+		emit REQ_TEMP();
+		tValue = await TEMP;
+	end
+	if pValue > 200 or tValue > 300 then
+		emit LED0(ON);
+	end
+	await 1min;
+	emit LED0(OFF);
+end
