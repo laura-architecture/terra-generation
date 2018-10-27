@@ -1,0 +1,8 @@
+var ushort tValue; 
+
+loop do
+	await 90s; 
+	emit REQ_TEMP();
+	tValue = await TEMP;
+	emit SEND_BS(tValue);
+end

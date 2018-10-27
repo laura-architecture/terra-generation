@@ -1,0 +1,29 @@
+var ushort phLevel; 
+var ushort phVal; 
+var agResult data; 
+var msg dataMsg; 
+var aggreg agA; 
+var group gr1; 
+
+grNew(&gr1,1,0,3,TRUE,OFF,2);
+agNew(&agA,&gr1,TEMP,AVG,GTE,0);
+phLevel = 100;
+
+par do
+	loop do
+		await 20s; 
+		emit REQ_PHOTO();
+		phVal = await PHOTO;
+		gr1.isMember = (phVal > phLevel);
+	end 
+with 
+	loop do
+		await 60s; 
+		if (NODE_ID == gr1.leader) then
+			emit AGGREG(&agA);
+			data = await AGGREG_DONE;
+			dataMsg.value4 = data.value;
+			emit SEND_BS(&dataMsg);
+		end 
+	end
+end

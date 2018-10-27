@@ -1,0 +1,22 @@
+var ushort nValue; 
+var ushort oValue; 
+var ushort cont; 
+
+cont = 0;
+oValue = 0;
+
+loop do
+	if cont > 9 then
+		await 80s; 
+	else
+		await 40s; 
+	end
+	emit REQ_TEMP();
+	nValue = await TEMP;
+	if oValue = nValue then
+		inc cont;
+	else
+		cont = 0;
+	end
+	emit SEND_BS(nValue);oValue = nValue;
+end
